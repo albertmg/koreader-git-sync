@@ -1,0 +1,33 @@
+# macOS and editor noise
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Python test/cache output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Deliverable packages
+dist/
+
+# Lua bytecode and local coverage output
+*.luac
+luac.out
+luac.out/
+luacov.*
+
+# Local runtime/state generated while testing KOReader plugins
+*.tmp
+*.bak
+*.log
+*.pid
+*.sqlite-shm
+*.sqlite-wal
+
+# Git Library Sync local state should not be committed.
+gitlibrarysync.lua
+gitlibrarysync/
+git-library-books/
+*.gitlibrarysync.tmp
