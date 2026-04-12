@@ -21,11 +21,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y lua5.4 zip
-          sudo update-alternatives --install /usr/bin/lua lua /usr/bin/lua5.4 100
-          sudo update-alternatives --install /usr/bin/luac luac /usr/bin/luac5.4 100
 
       - name: Run checks
-        run: make check
+        run: make check LUA=lua5.4 LUAC=luac5.4
 
       - name: Build packages
         run: make package

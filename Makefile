@@ -2,6 +2,8 @@ PLUGIN := koreader-git-sync.koplugin
 DIST := dist
 ZIP := $(DIST)/$(PLUGIN).zip
 TARBALL := $(DIST)/$(PLUGIN).tar.gz
+LUA ?= lua
+LUAC ?= luac
 
 .PHONY: package clean check
 
@@ -23,8 +25,8 @@ package:
 	@printf 'Created %s\nCreated %s\n' "$(ZIP)" "$(TARBALL)"
 
 check:
-	@luac -p $(PLUGIN)/*.lua
-	@lua -e 'package.path="$(PLUGIN)/?.lua;"..package.path; local Path=require("gls_path"); assert(Path.join("/a/","b","c") == "/a/b/c"); local Base64=require("gls_base64"); assert(Base64.encode("hello") == "aGVsbG8="); local Hash=require("gls_hash"); assert(Hash.content("abc") == Hash.content("abc")); assert(Hash.content("abc") ~= Hash.content("abd")); print("ok - lua pure module smoke tests")'
+	@$(LUAC) -p $(PLUGIN)/*.lua
+	@$(LUA) -e 'package.path="$(PLUGIN)/?.lua;"..package.path; local Path=require("gls_path"); assert(Path.join("/a/","b","c") == "/a/b/c"); local Base64=require("gls_base64"); assert(Base64.encode("hello") == "aGVsbG8="); local Hash=require("gls_hash"); assert(Hash.content("abc") == Hash.content("abc")); assert(Hash.content("abc") ~= Hash.content("abd")); print("ok - lua pure module smoke tests")'
 	@python3 tests/test_static_contract.py
 
 clean:
