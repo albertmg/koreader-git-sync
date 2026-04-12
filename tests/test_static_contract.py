@@ -2,7 +2,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PLUGIN = ROOT / "gitlibrarysync.koplugin"
+PLUGIN = ROOT / "koreader-git-sync.koplugin"
 
 
 def read(name: str) -> str:
@@ -49,6 +49,14 @@ def test_provider_can_be_selected_in_settings_and_ui():
     assert "GitLab" in main
 
 
+def test_project_name_is_koreader_git_sync():
+    meta = read("_meta.lua")
+    main = read("main.lua")
+    assert "KOReader Git Sync" in meta
+    assert "KOReader Git Sync" in main
+    assert PLUGIN.name == "koreader-git-sync.koplugin"
+
+
 def test_books_sync_is_remote_master_only():
     books = read("gls_books_sync.lua")
     assert 'list_files("books")' in books
@@ -62,7 +70,7 @@ def test_metadata_newest_wins_and_local_tie_breaker():
     assert "local_file.mtime >= remote_mtime" in meta
     assert 'file_path = "meta/" .. rel' in meta
     assert "deleted_remote" in meta
-    assert ".gitlibrarysync-manifest.json" in meta
+    assert ".koreader-git-sync-manifest.json" in meta
 
 
 def test_config_is_manual_and_conflict_prompted():
@@ -79,7 +87,7 @@ def test_config_is_manual_and_conflict_prompted():
 def test_credentials_and_sensitive_config_are_excluded():
     settings = read("gls_settings.lua")
     config = read("gls_config_sync.lua")
-    assert "gitlibrarysync.lua" in settings
+    assert "koreader_git_sync.lua" in settings
     for word in ["token", "password", "secret", "credential", "network", "device"]:
         assert word in config
 

@@ -26,8 +26,8 @@ luacov.*
 *.sqlite-shm
 *.sqlite-wal
 
-# Git Library Sync local state should not be committed.
-gitlibrarysync.lua
-gitlibrarysync/
-git-library-books/
-*.gitlibrarysync.tmp
+# KOReader Git Sync local state should not be committed.
+koreader_git_sync.lua
+koreader-git-sync/
+koreader-git-sync-books/
+*.koreader-git-sync.tmp

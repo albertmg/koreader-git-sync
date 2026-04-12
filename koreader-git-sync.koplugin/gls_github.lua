@@ -7,7 +7,7 @@ local ok_https, https = pcall(require, "ssl.https")
 local ok_socketutil, socketutil = pcall(require, "socketutil")
 
 if not ok_http then
-    error("Git Library Sync requires LuaSocket")
+    error("KOReader Git Sync requires LuaSocket")
 end
 
 local Base64 = require("gls_base64")
@@ -123,7 +123,7 @@ function GitHub:request(method, url, opts)
     local headers = {
         ["Accept"] = opts.accept or "application/vnd.github+json",
         ["X-GitHub-Api-Version"] = "2022-11-28",
-        ["User-Agent"] = "KOReader-Git-Library-Sync",
+        ["User-Agent"] = "KOReader-Git-Sync",
     }
     if self.token and self.token ~= "" then
         headers["Authorization"] = "Bearer " .. self.token

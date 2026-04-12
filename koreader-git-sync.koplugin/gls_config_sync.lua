@@ -6,7 +6,7 @@ local Path = require("gls_path")
 local ConfigSync = {}
 ConfigSync.__index = ConfigSync
 
-local MANIFEST_PATH = "config/.gitlibrarysync-manifest.json"
+local MANIFEST_PATH = "config/.koreader-git-sync-manifest.json"
 
 function ConfigSync.new(client, settings, state)
     return setmetatable({
@@ -18,8 +18,9 @@ end
 
 local function excluded_config_path(rel)
     local lower = rel:lower()
-    if lower:match("^gitlibrarysync%.lua$") then return true end
-    if lower:find("gitlibrarysync", 1, true) then return true end
+    if lower:match("^koreader_git_sync%.lua$") then return true end
+    if lower:find("koreader_git_sync", 1, true) then return true end
+    if lower:find("koreader-git-sync", 1, true) then return true end
     if lower:find("token", 1, true) then return true end
     if lower:find("password", 1, true) then return true end
     if lower:find("passwd", 1, true) then return true end
@@ -50,7 +51,7 @@ local function strip_prefix(remote_map, prefix)
     local result = {}
     for remote_path, entry in pairs(remote_map or {}) do
         local rel = remote_path:gsub("^" .. prefix .. "/", "")
-        if rel ~= remote_path and rel ~= ".gitlibrarysync-manifest.json" and not excluded_config_path(rel) then
+        if rel ~= remote_path and rel ~= ".koreader-git-sync-manifest.json" and not excluded_config_path(rel) then
             result[rel] = entry
         end
     end

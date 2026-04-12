@@ -25,7 +25,7 @@ local Settings = require("gls_settings")
 local State = require("gls_state")
 
 local GitLibrarySync = WidgetContainer:extend{
-    name = "gitlibrarysync",
+    name = "koreader_git_sync",
     is_doc_only = false,
 }
 
@@ -74,19 +74,19 @@ function GitLibrarySync:init()
 end
 
 function GitLibrarySync:onDispatcherRegisterActions()
-    Dispatcher:registerAction("gitlibrarysync_books", {
+    Dispatcher:registerAction("koreader_git_sync_books", {
         category = "none",
         event = "GitLibrarySyncBooks",
         title = _("Sync Git library books"),
         general = true,
     })
-    Dispatcher:registerAction("gitlibrarysync_meta", {
+    Dispatcher:registerAction("koreader_git_sync_meta", {
         category = "none",
         event = "GitLibrarySyncMetadata",
         title = _("Sync Git library metadata"),
         general = true,
     })
-    Dispatcher:registerAction("gitlibrarysync_config", {
+    Dispatcher:registerAction("koreader_git_sync_config", {
         category = "none",
         event = "GitLibrarySyncConfig",
         title = _("Sync Git library config"),
@@ -107,14 +107,14 @@ end
 function GitLibrarySync:is_configured(show_error)
     if self.settings:is_configured() then return true end
     if show_error then
-        self:show_error(_("Git Library Sync is not configured. Open setup and enter the repository and token."))
+        self:show_error(_("KOReader Git Sync is not configured. Open setup and enter the repository and token."))
     end
     return false
 end
 
 function GitLibrarySync:show_error(message)
     UIManager:show(InfoMessage:new{
-        text = _("Git Library Sync failed:") .. "\n\n" .. tostring(message),
+        text = _("KOReader Git Sync failed:") .. "\n\n" .. tostring(message),
         icon = "notice-warning",
     })
 end
@@ -262,7 +262,7 @@ function GitLibrarySync:show_status()
     local cfg = self.settings.data
     local data = self.state.data
     local repo = cfg.repository ~= "" and cfg.repository or _("not set")
-    local text = _("Git Library Sync") .. "\n\n"
+    local text = _("KOReader Git Sync") .. "\n\n"
         .. _("Provider") .. ": " .. Provider.label(cfg.provider) .. "\n"
         .. _("Repository") .. ": " .. repo .. "\n"
         .. _("API URL") .. ": " .. (cfg.base_url or Provider.default_base_url(cfg.provider)) .. "\n"
@@ -280,7 +280,7 @@ function GitLibrarySync:show_setup(touchmenu_instance)
     local dialog
     local current_provider = Provider.normalize(cfg.provider)
     dialog = MultiInputDialog:new{
-        title = _("Git Library Sync setup"),
+        title = _("KOReader Git Sync setup"),
         fields = {
             {
                 description = _("Provider: gitlab or github"),
@@ -316,7 +316,7 @@ function GitLibrarySync:show_setup(touchmenu_instance)
             {
                 description = _("Local books folder managed by this plugin"),
                 text = cfg.books_dir or "",
-                hint = "/mnt/us/documents/git-library",
+                hint = "/mnt/us/documents/koreader-git-sync",
             },
             {
                 description = _("Local KOReader configuration folder"),
@@ -363,8 +363,8 @@ function GitLibrarySync:show_setup(touchmenu_instance)
 end
 
 function GitLibrarySync:addToMainMenu(menu_items)
-    menu_items.gitlibrarysync = {
-        text = _("Git Library Sync"),
+    menu_items.koreader_git_sync = {
+        text = _("KOReader Git Sync"),
         sub_item_table = {
             {
                 text = _("Status"),

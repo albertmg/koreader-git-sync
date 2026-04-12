@@ -3,7 +3,7 @@ if not ok then
     ok, lfs = pcall(require, "lfs")
 end
 if not ok then
-    error("Git Library Sync requires LuaFileSystem")
+    error("KOReader Git Sync requires LuaFileSystem")
 end
 
 local Path = require("gls_path")
@@ -74,7 +74,7 @@ end
 function FS.write_file(file_path, content)
     local ok_parent, err = FS.ensure_parent(file_path)
     if not ok_parent then return nil, err end
-    local tmp_path = file_path .. ".gitlibrarysync.tmp"
+    local tmp_path = file_path .. ".koreader-git-sync.tmp"
     local fh, open_err = io.open(tmp_path, "wb")
     if not fh then return nil, open_err end
     fh:write(content or "")

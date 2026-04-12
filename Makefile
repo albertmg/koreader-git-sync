@@ -1,4 +1,4 @@
-PLUGIN := gitlibrarysync.koplugin
+PLUGIN := koreader-git-sync.koplugin
 DIST := dist
 ZIP := $(DIST)/$(PLUGIN).zip
 TARBALL := $(DIST)/$(PLUGIN).tar.gz

@@ -31,7 +31,7 @@ local function defaults()
         username = "",
         token = "",
         device_name = device_name(),
-        books_dir = Path.join(data_dir, "git-library-books"),
+        books_dir = Path.join(data_dir, "koreader-git-sync-books"),
         config_dir = settings_dir(),
         books_enabled = true,
         meta_enabled = true,
@@ -53,7 +53,7 @@ end
 function Settings.open()
     local dir = settings_dir()
     FS.ensure_dir(dir)
-    local file_path = Path.join(dir, "gitlibrarysync.lua")
+    local file_path = Path.join(dir, "koreader_git_sync.lua")
     local store = LuaSettings:open(file_path)
     store.data = merge_defaults(store.data)
     local self = setmetatable({ path = file_path, store = store, data = store.data }, Settings)
@@ -73,7 +73,7 @@ function Settings:is_configured()
 end
 
 function Settings:state_path()
-    local dir = Path.join(DataStorage:getDataDir(), "gitlibrarysync")
+    local dir = Path.join(DataStorage:getDataDir(), "koreader-git-sync")
     FS.ensure_dir(dir)
     return Path.join(dir, "state.json")
 end

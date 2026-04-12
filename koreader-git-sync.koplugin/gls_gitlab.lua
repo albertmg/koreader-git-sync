@@ -7,7 +7,7 @@ local ok_https, https = pcall(require, "ssl.https")
 local ok_socketutil, socketutil = pcall(require, "socketutil")
 
 if not ok_http then
-    error("Git Library Sync requires LuaSocket")
+    error("KOReader Git Sync requires LuaSocket")
 end
 
 local GitLab = {}

@@ -1,6 +1,6 @@
-# Git Library Sync: Git-backed Library Sync for KOReader
+# KOReader Git Sync
 
-Git Library Sync keeps a KOReader library aligned with a single Git provider
+KOReader Git Sync keeps a KOReader library aligned with a single Git provider
 repository. It can pull books onto the device, sync reading metadata, and
 manually sync KOReader configuration without requiring a `git` binary on the
 reader.
@@ -51,17 +51,18 @@ config/
 ```
 
 Put your book files under `books/`. The `meta/` and `config/` folders may start
-empty; the plugin creates `.gitlibrarysync-manifest.json` files there as needed.
+empty; the plugin creates `.koreader-git-sync-manifest.json` files there as
+needed.
 
 ### 2. Install the Plugin
 
-Copy the `gitlibrarysync.koplugin` folder into KOReader's `plugins` directory,
-then restart KOReader.
+Copy the `koreader-git-sync.koplugin` folder into KOReader's `plugins`
+directory, then restart KOReader.
 
 Typical destination:
 
 ```text
-koreader/plugins/gitlibrarysync.koplugin
+koreader/plugins/koreader-git-sync.koplugin
 ```
 
 ### 3. Configure the Plugin
@@ -69,7 +70,7 @@ koreader/plugins/gitlibrarysync.koplugin
 Open KOReader, then go to:
 
 ```text
-Tools > More tools > Git Library Sync > Setup
+Tools > More tools > KOReader Git Sync > Setup
 ```
 
 Fill in:
@@ -88,7 +89,7 @@ Fill in:
 - **Local books folder** managed by this plugin
 - **Local KOReader configuration folder**
 
-Credentials are stored locally in `gitlibrarysync.lua`. That file is excluded
+Credentials are stored locally in `koreader_git_sync.lua`. That file is excluded
 from config sync by default.
 
 ### 4. Use the Plugin
@@ -136,12 +137,16 @@ make package
 This creates:
 
 ```text
-dist/gitlibrarysync.koplugin.zip
-dist/gitlibrarysync.koplugin.tar.gz
+dist/koreader-git-sync.koplugin.zip
+dist/koreader-git-sync.koplugin.tar.gz
 ```
 
 The zip is the normal installable package: extract or copy it so the device has
-`koreader/plugins/gitlibrarysync.koplugin`.
+`koreader/plugins/koreader-git-sync.koplugin`.
+
+GitHub can generate these packages automatically. Push an RC tag such as
+`v0.1.0-rc.1`; the release workflow runs checks, builds the archives, uploads
+workflow artifacts, and creates a GitHub prerelease for tags containing `-rc`.
 
 Clean generated packages:
 
@@ -149,13 +154,35 @@ Clean generated packages:
 make clean
 ```
 
+## Release Candidate Flow
+
+Use the regular Gitflow shape:
+
+```sh
+git checkout develop
+git pull --ff-only
+git checkout -b release/v0.1.0-rc.1
+make check
+git push -u origin release/v0.1.0-rc.1
+git tag -a v0.1.0-rc.1 -m "KOReader Git Sync v0.1.0-rc.1"
+git push origin v0.1.0-rc.1
+```
+
+Pushing the `v0.1.0-rc.1` tag triggers the GitHub release workflow. Tags that
+contain `-rc` are published as GitHub prereleases with the generated zip and
+tarball attached.
+
+After validating the release candidate, finish the release in the usual Gitflow
+way by merging the release branch into `master`, tagging the final version, and
+merging it back into `develop`.
+
 ## Development Checks
 
 Run local checks from the repository root:
 
 ```sh
-luac -p gitlibrarysync.koplugin/*.lua
-lua -e 'package.path="gitlibrarysync.koplugin/?.lua;"..package.path; local Path=require("gls_path"); assert(Path.join("/a/","b","c") == "/a/b/c"); local Base64=require("gls_base64"); assert(Base64.encode("hello") == "aGVsbG8="); local Hash=require("gls_hash"); assert(Hash.content("abc") == Hash.content("abc")); assert(Hash.content("abc") ~= Hash.content("abd")); print("ok - lua pure module smoke tests")'
+luac -p koreader-git-sync.koplugin/*.lua
+lua -e 'package.path="koreader-git-sync.koplugin/?.lua;"..package.path; local Path=require("gls_path"); assert(Path.join("/a/","b","c") == "/a/b/c"); local Base64=require("gls_base64"); assert(Base64.encode("hello") == "aGVsbG8="); local Hash=require("gls_hash"); assert(Hash.content("abc") == Hash.content("abc")); assert(Hash.content("abc") ~= Hash.content("abd")); print("ok - lua pure module smoke tests")'
 python3 tests/test_static_contract.py
 ```
 

@@ -6,7 +6,7 @@ local Path = require("gls_path")
 local MetaSync = {}
 MetaSync.__index = MetaSync
 
-local MANIFEST_PATH = "meta/.gitlibrarysync-manifest.json"
+local MANIFEST_PATH = "meta/.koreader-git-sync-manifest.json"
 
 function MetaSync.new(client, settings, state)
     return setmetatable({
@@ -62,7 +62,7 @@ local function strip_prefix(remote_map, prefix)
     local result = {}
     for remote_path, entry in pairs(remote_map or {}) do
         local rel = remote_path:gsub("^" .. prefix .. "/", "")
-        if rel ~= remote_path and rel ~= ".gitlibrarysync-manifest.json" then
+        if rel ~= remote_path and rel ~= ".koreader-git-sync-manifest.json" then
             result[rel] = entry
         end
     end

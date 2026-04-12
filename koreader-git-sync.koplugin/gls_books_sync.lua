@@ -63,7 +63,7 @@ function BooksSync:sync()
 
     local local_files = FS.list_files(cfg.books_dir, {
         exclude_dirs = { "%.sdr$" },
-        exclude_files = { "^%.gitlibrarysync" },
+        exclude_files = { "^%.koreader%-git%-sync" },
     })
     for _, rel in ipairs(local_files) do
         if not remote_by_local[rel] and not is_sidecar_or_state(rel) then
